@@ -1,70 +1,200 @@
-/*          user signin check function       */
-
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        // User is signed in.
-
         document.getElementById("user_div").style.display = "block";
         document.getElementById("login_div").style.display = "none";
 
-        var user = firebase.auth().currentUser;
-
-        if (user != null) {
-
-            var email_id = user.email;
-            document.getElementById("username").innerHTML = email_id;
-
-        }
-
+        var email_id = user.email;
+        document.getElementById("username").innerHTML = email_id;
     } else {
-        // No user is signed in.
-
         document.getElementById("user_div").style.display = "none";
-
         document.getElementById("login_div").style.display = "block";
-
     }
 });
+
 
 /*                   Login                        */
 
 function login() {
     var userEmail = document.getElementById("email_field").value;
-    var userPass = document.getElementById("password_field").value; /*           realtime flowmeter reading       */
+    var userPass = document.getElementById("password_field").value;
 
+    // Fetch new data
+    var database = firebase.database();
+    var dataRef = database.ref("Unit/6");  // Adjust to the correct path for your data
 
-    var totalwater = document.getElementById("totalwater");
-    var alertIssue = document.getElementById("alertMessage")
+    dataRef.on('value', function (snapshot) {
+        var data = snapshot.val();
+        
+        // Display values in HTML
+        document.getElementById("totalwater").innerText = data.Solids || "No Data";
 
-    var totalWaterRef = firebase.database().ref("Unit/6").child("Twater");
+        // Doughnut charts
+        updateDoughnutCharts(data);
+        
+        // Line Chart
+        updateLineChart(data);
+        
+        // Bar Chart
+        updateBarChart(data);
+        
+        // Gauge Chart
+        updateGaugeChart(data.ph);
+    });
 
-    totalWaterRef.on('value', function (datasnapshot) {
-        totalwater.innerText = datasnapshot.val();
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
+        var errorMessage = error.message;
+        window.alert("Error : " + errorMessage);
+    });
+}
 
+function updateDoughnutCharts(data) {
+    var ctx = document.getElementById("canvasDoughnut").getContext('2d');
+    var doughnutData = {
+        labels: ["Industry", "Household", "Main Pipe"],
+        datasets: [{
+            data: [2202, 25000, data.Solids || 0],
+            backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7"],
+            hoverBackgroundColor: ["#34495E", "#B370CF", "#CFD4D8"]
+        }]
+    };
 
-        // Doughnut chart
-        var ctx = document.getElementById("canvasDoughnut");
-        var data = {
-            labels: [
-                "Industry",
-                "House Hold",
-                "Main Pipe"
-            ],
-            datasets: [{
-                data: [2202, 25000, datasnapshot.val()],
-                backgroundColor: [
-                    "#455C73",
-                    "#9B59B6",
-                    "#BDC3C7"
-                ],
-                hoverBackgroundColor: [
-                    "#34495E",
-                    "#B370CF",
-                    "#CFD4D8"
-                ]
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: doughnutData
+    });
 
+    var ctx2 = document.getElementById("canvasDoughnut2").getContext('2d');
+    var doughnutData2 = {
+        labels: ["Milk", "Beverages", "Dyeing"],
+        datasets: [{
+            data: [78020, 25000, data.Solids || 0],
+            backgroundColor: ["#26B99A", "#BDC3C7", "#FFA500"],
+            hoverBackgroundColor: ["#26B99A", "#BDC3C7", "#FFA500"]
+        }]
+    };
+
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: doughnutData2
+    });
+}
+
+function updateLineChart(data) {
+    var ctx = document.getElementById("lineChart").getContext('2d');
+    
+    var lineData = {
+        labels: ["", "", "", "", "", "", ""],
+        datasets: [{
+            label: "Initial Reading",
+            backgroundColor: "rgba(38, 185, 154, 0.31)",
+            borderColor: "rgba(38, 185, 154, 0.7)",
+            data: [/* Your data here */],
+        }, {
+            label: "Final Reading",
+            backgroundColor: "rgba(3, 88, 106, 0.3)",
+            borderColor: "rgba(3, 88, 106, 0.70)",
+            data: [/* Your data here */],
+        }]
+    };
+
+    new Chart(ctx, {
+        type: 'line',
+        data: lineData
+    });
+}
+
+function updateBarChart(data) {
+    var ctx = document.getElementById("mybarChart").getContext('2d');
+    
+    var barData = {
+        labels: ["", "", "", "", "", "", ""],
+        datasets: [{
+            label: 'Initial',
+            backgroundColor: "#26B99A",
+            data: [/* Your data here */],
+        }, {
+            label: 'Final',
+            backgroundColor: "#03586A",
+            data: [/* Your data here */],
+        }]
+    };
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: barData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function updateGaugeChart(ph) {
+    var echartGauge = echarts.init(document.getElementById('gaugeChart'));
+
+    var gaugeData = {
+        tooltip: {
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        series: [{
+            type: 'gauge',
+            center: ['50%', '50%'],
+            startAngle: 140,
+            endAngle: -140,
+            min: 0,
+            max: 14,
+            precision: 0,
+            splitNumber: 10,
+            axisLine: {
+                lineStyle: {
+                    color: [
+                        [0.2, '#ff4500'],
+                        [0.4, 'orange'],
+                        [0.6, 'lightgreen'],
+                        [0.8, 'orange'],
+                        [1, '#ff4500']
+                    ],
+                    width: 32
+                }
+            },
+            axisTick: {
+                length: 8
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#333'
+                }
+            },
+            splitLine: {
+                length: 30
+            },
+            pointer: {
+                length: '72%'
+            },
+            title: {
+                offsetCenter: ['-65%', -10]
+            },
+            detail: {
+                formatter: '{value}',
+                textStyle: {
+                    fontSize: 30
+                }
+            },
+            data: [{
+                value: ph || 0,
+                name: 'pH'
             }]
-        };
+        }]
+    };
+
+    echartGauge.setOption(gaugeData);
+}
+
 
         var canvasDoughnut = new Chart(ctx, {
             type: 'doughnut',
@@ -102,10 +232,6 @@ function login() {
             data: data
         });
 
-
-
-
-    });
 
 
 
@@ -229,46 +355,52 @@ function login() {
 
 
     var database = firebase.database(); /*   alert    */
-    var alertRef = database.ref("Unit/5").child("alert");
-    alertRef.on('child_added', function (snapshot) {
-        console.log('[child_added] key:' + snapshot.key);
-        console.log('[child_added] val:' + JSON.stringify(snapshot.val()));
+   
+    var alertRef = database.ref("Unit/6").child("alert"); // Update path as needed
+alertRef.on('child_added', function (snapshot) {
+    var alertMessage = snapshot.val();
+    console.log('[child_added] Alert:' + alertMessage);
 
-        modal.style.display = "block";
-        span.onclick = function () {
+    // Display modal
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName("close")[0];
+    modal.style.display = "block";
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+    };
+
+    // Notify
+    function notifyMe() {
+        if (!("Notification" in window)) {
+            alert("This browser does not support system notifications");
+        } else if (Notification.permission === "granted") {
+            notify();
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+                if (permission === "granted") {
+                    notify();
+                }
+            });
         }
 
-        function notifyMe() {
-            if (!("Notification" in window)) {
-                alert("This browser does not support system notifications");
-            } else if (Notification.permission === "granted") {
-                notify();
-            } else if (Notification.permission !== 'denied') {
-                Notification.requestPermission(function (permission) {
-                    if (permission === "granted") {
-                        notify();
-                    }
-                });
-            }
-
-            function notify() {
-                var notification = new Notification('Alert', {
-                    icon: 'build/images/waterDrop.png',
-                    body: snapshot.val()
-                });
-                setTimeout(notification.close.bind(notification), 7000);
-            }
-            console.log(snapshot.val());
-
+        function notify() {
+            var notification = new Notification('Alert', {
+                icon: 'build/images/waterDrop.png',
+                body: alertMessage
+            });
+            setTimeout(notification.close.bind(notification), 7000);
         }
-        notifyMe();
+    }
+    notifyMe();
     });
+
     firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) { //auth error
         // Handle Errors here.
         var errorCode = error.code;
@@ -418,9 +550,6 @@ function login() {
 
         });
     });
-
-
-}
 
 /*       Logout       */
 function logout() {

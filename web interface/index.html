@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="build/js/jquery.js"></script>
+    <!--script language="javascript">
+        $('document').ready(function(e) {
+            $('.loader').fadeOut(function() {
+                $('.loader').remove();
+            });
+        });
+
+    </script>
+    <style>
+        .loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(build/images/) 50% 50% no-repeat rgb(249, 249, 249);
+        }
+
+    </style -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="icon" href="build/images/favicon.ico" type="image/ico" />
+
+    <title>Water Supply Management System </title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/font-awesome/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="build/css/style.css" rel="stylesheet" />
+    <link href="build/css/custom.min.css" rel="stylesheet">
+    <link href="alert.css" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <!--  <script src="http://code.jquery.com/jquery-latest.js"></script>  -->
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB68WUlPyIDFfs5KHq0a_dbaSROGZF_o8A",
+            authDomain: "team-challengers-37568.firebaseapp.com",
+            databaseURL: "https://team-challengers-37568-default-rtdb.firebaseio.com",
+            projectId: "team-challengers-37568",
+            storageBucket: "team-challengers-37568.appspot.com",
+            messagingSenderId: "847627362842"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+
+    <!-- <script>
+        var refreshId = setInterval(function() {
+            $('#echart_guage').fadeOut("slow").load('response.php').fadeIn("slow");
+        }, 10000);
+
+    </script> -->
+    <!-- Custom Theme Scripts -->
+    <script src="build/js/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="nav-md" onload="startDateTime()">
+
+
+    <div class="loader"></div>
+
+    <div id="login_div" class="main-div">
+        <h3>Water Supply Monitoring System</h3>
+        <input type="email" placeholder="Email..." id="email_field" />
+        <input type="password" placeholder="Password..." id="password_field" />
+
+        <button onclick="login()">Login to Account</button>
+    </div>
+
+    <div id="user_div" class="loggedin-div" onload="startDate()">
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+
+
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <div class="alert alert-danger" role="alert">
+                    <span class="close">&times;</span>
+                    <h4 class="alert-heading" style="text-align: center;">Alert !!</h4>
+                </div>
+
+
+<!--
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <div align="center">
+                        <i></i>
+                        <h1 class="fa fa-warning" style="font-size:48px;color:white"> ALERT</h1>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p id="alertMessage"></p>
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <h3>Call 79797979977</h3>
+                </div>
+-->
+            </div>
+            <style>
+                @-webkit-keyframes argh-my-eyes {
+                    0% {
+                        background-color: #ff2e46;
+                    }
+                    49% {
+                        background-color: #ff2e46;
+                    }
+                    50% {
+                        background-color: #000;
+                    }
+                    99% {
+                        background-color: #000;
+                    }
+                    100% {
+                        background-color: #ff2e46;
+                    }
+                }
+
+                @-moz-keyframes argh-my-eyes {
+                    0% {
+                        background-color: #ff2e46;
+                    }
+                    49% {
+                        background-color: #ff2e46;
+                    }
+                    50% {
+                        background-color: #000;
+                    }
+                    99% {
+                        background-color: #000;
+                    }
+                    100% {
+                        background-color: #ff2e46;
+                    }
+                }
+
+                @keyframes argh-my-eyes {
+                    0% {
+                        background-color: #ff2e46;
+                    }
+                    49% {
+                        background-color: #ff2e46;
+                    }
+                    50% {
+                        background-color: #000;
+                    }
+                    99% {
+                        background-color: #000;
+                    }
+                    100% {
+                        background-color: #ff2e46;
+                    }
+                }
+
+                .modal-header {
+                    -webkit-animation: argh-my-eyes 1s infinite;
+                    -moz-animation: argh-my-eyes 1s infinite;
+                    animation: argh-my-eyes 0.5s infinite;
+                }
+
+                .modal-footer {
+                    -webkit-animation: argh-my-eyes 1s infinite;
+                    -moz-animation: argh-my-eyes 1s infinite;
+                    animation: argh-my-eyes 0.5s infinite;
+                }
+
+            </style>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav class="col-md-12 col-sm-12">
+                    <a class="tilte-alignment" style="font-size: 150%; font-weight:900;" href="index.html">
+                        <strong style="font-size: 110%;">W</strong>ater
+                        <strong style="font-size: 110%;">S</strong>upply
+                        <strong style="font-size: 110%;">M</strong>anagement
+                        <strong style="font-size: 110%;">S</strong>ystem
+                    </a>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user" style="color: #1ABB9C"></i>
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li> <a style="padding-bottom: 14px;padding-top: 8px;font-size: 13px;" id="username"></a></li>
+
+                                <li>
+                                    <a href="javascript:;">Help</a>
+                                </li>
+                                <li>
+                                    <a onclick="logout()">
+                                        <i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <em class="far fa-envelope"></em>
+                                <span class="badge bg-green">6</span>
+                            </a>
+                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                <li>
+                                    <a>
+                                        <span>
+                                            <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                        </span>
+                                        <span class="message">
+                                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span>
+                                            <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                        </span>
+                                        <span class="message">
+                                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span>
+                                            <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                        </span>
+                                        <span class="message">
+                                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span>
+                                            <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                        </span>
+                                        <span class="message">
+                                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="text-center">
+                                        <a>
+                                            <strong>See All Alerts</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+        </div>
+        <!-- /top navigation -->
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <!-- page content -->
+                <!-- top tiles -->
+                <div class="row tile_count">
+                    <div class="tile_stats_count col-md-1 col-sm-4 col-xs-4"></div>
+                    <div class="col-sm-4 col-xs-6 tile_stats_count col-md-4 col-md-offset-0">
+                        <span class="count_top">
+                            <em class="fas fa-tachometer-alt"></em>Total Water</span>
+                        <div class="count" id="totalwater"></div>
+                        <span style="font-size: 10px;" class="count_bottom">
+                            <i class="green" style="font-size: 13px;">Liters </i>
+                            <b> | </b> Currently</span>
+                    </div>
+                    <div class="tile_stats_count col-md-4 col-sm-12 col-xs-7">
+                        <span class="count_top">
+                            <i class="fas fa-weight"></i> Pressure</span>
+                        <div class="count green">123.50</div>
+                        <span style="font-size: 13px;" class="count_bottom">
+                            <i class="gray" style="font-size: 13px;">Pascal </i>
+                        </span>
+                    </div>
+
+                    <div class="tile_stats_count col-sm-offset-7 col-sm-5 col-md-offset-0 col-md-3 col-xs-5">
+                        <span class="count_top">
+                            <i class="fas fa-tachometer-alt"></i> Total Water</span>
+                        <div class="count">2,500</div>
+                        <span style="font-size: 10px;" class="count_bottom">
+                            <i class="green" style="font-size: 13px;">Liters </i>
+                            <b> | </b> Per Day</span>
+                    </div>
+                    <div style="float: left; font-size: 20px; color: #EDEDED;margin-left: 35px;" id="date"></div>
+
+                    <div style="float: right;font-size: 20px; color: #EDEDED; margin-right: 35px;" id="time"></div>
+                </div>
+                <!-- /top tiles -->
+                <div class="clearfix col-md-12"></div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Flow Meter
+                    
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <!--lineChart-->
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>pH Reading<small></small></h2>
+                                
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="echart_guage" style="height:357px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                   <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Analytics
+                                   
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <!--canvasDoughnut-->
+                                <canvas id="canvasDoughnut"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Industry Usage
+                                   
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <!--canvasDoughnut-->
+                                <canvas id="canvasDoughnut2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div id="row">
+            <!-- footer content -->
+            <footer style="margin-bottom: 20px;">
+                <div class="pull-right" style="padding-bottom: 20px;">
+                    Developed by
+                    <a href="http://www.itslogicnotmagic.com">
+                        <b>Mavuluru Viswajith Reddy</b>
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+
+    <!-- /footer content -->
+    <!-- jQuery -->
+    <script src="/vendors/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/Chart.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendors/fastclick/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendors/nprogress/nprogress.js"></script>
+    <!-- ECharts -->
+    <script src="vendors/echart/echarts.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="build/js/custom.min.js"></script>
+
+    <!--                        Start Date and Time                              -->
+    <script>
+        function startDateTime() {
+            var todaytime = new Date();
+
+            var year = todaytime.getFullYear();
+            var month = todaytime.getMonth() + 1;
+            var day = todaytime.getDate();
+
+            var h = todaytime.getHours();
+            var m = todaytime.getMinutes();
+            var s = todaytime.getSeconds();
+            if (h == 0) {
+                h = 12;
+            } else if (h > 12) {
+                h = h - 12;
+            }
+            month = checkTime(month);
+            day = checkTime(day);
+
+            h = checkTime(h);
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('date').innerHTML = (day + " / " + month + " / " + year);
+            document.getElementById('time').innerHTML = h + " : " + m + " : " + s;
+            var t = setTimeout(startDateTime, 1000);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }; // add zero in front of numbers < 10
+            return i;
+        }
+
+    </script>
+    <!--                         End Date and Time                               -->
+
+    <!--                              Charts                                     -->
+
+
+    <!--                            End charts                                   -->
+    <script>
+        /*echartGauge*/
+
+        var theme = {
+            color: [
+                '#26B99A', '#34495E', '#BDC3C7', '#3498DB',
+                '#9B59B6', '#8abb6f', '#759c6a', '#bfd3b7'
+            ],
+
+            title: {
+                itemGap: 8,
+                textStyle: {
+                    fontWeight: 'normal',
+                    color: '#408829'
+                }
+            },
+
+            dataRange: {
+                color: ['#1f610a', '#97b58d']
+            },
+
+            toolbox: {
+                color: ['#408829', '#408829', '#408829', '#408829']
+            },
+
+            tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#408829',
+                        type: 'dashed'
+                    },
+                    crossStyle: {
+                        color: '#408829'
+                    },
+                    shadowStyle: {
+                        color: 'rgba(200,200,200,0.3)'
+                    }
+                }
+            },
+
+            dataZoom: {
+                dataBackgroundColor: '#eee',
+                fillerColor: 'rgba(64,136,41,0.2)',
+                handleColor: '#408829'
+            },
+            grid: {
+                borderWidth: 0
+            },
+
+            categoryAxis: {
+                axisLine: {
+                    lineStyle: {
+                        color: '#408829'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: ['#eee']
+                    }
+                }
+            },
+
+            valueAxis: {
+                axisLine: {
+                    lineStyle: {
+                        color: '#408829'
+                    }
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: ['#eee']
+                    }
+                }
+            },
+            timeline: {
+                lineStyle: {
+                    color: '#408829'
+                },
+                controlStyle: {
+                    normal: {
+                        color: '#408829'
+                    },
+                    emphasis: {
+                        color: '#408829'
+                    }
+                }
+            },
+
+            k: {
+                itemStyle: {
+                    normal: {
+                        color: '#68a54a',
+                        color0: '#a9cba2',
+                        lineStyle: {
+                            width: 1,
+                            color: '#408829',
+                            color0: '#86b379'
+                        }
+                    }
+                }
+            },
+            map: {
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            color: '#ddd'
+                        },
+                        label: {
+                            textStyle: {
+                                color: '#c12e34'
+                            }
+                        }
+                    },
+                    emphasis: {
+                        areaStyle: {
+                            color: '#99d2dd'
+                        },
+                        label: {
+                            textStyle: {
+                                color: '#c12e34'
+                            }
+                        }
+                    }
+                }
+            },
+            force: {
+                itemStyle: {
+                    normal: {
+                        linkStyle: {
+                            strokeColor: '#408829'
+                        }
+                    }
+                }
+            },
+            chord: {
+                padding: 4,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 1,
+                            color: 'rgba(128, 128, 128, 0.5)'
+                        },
+                        chordStyle: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            }
+                        }
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 1,
+                            color: 'rgba(128, 128, 128, 0.5)'
+                        },
+                        chordStyle: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            }
+                        }
+                    }
+                }
+            },
+            gauge: {
+                startAngle: 225,
+                endAngle: -45,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [
+                            [0.2, '#86b379'],
+                            [0.8, '#68a54a'],
+                            [1, '#408829']
+                        ],
+                        width: 8
+                    }
+                },
+                axisTick: {
+                    splitNumber: 10,
+                    length: 12,
+                    lineStyle: {
+                        color: 'auto'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: 'auto'
+                    }
+                },
+                splitLine: {
+                    length: 18,
+                    lineStyle: {
+                        color: 'auto'
+                    }
+                },
+                pointer: {
+                    length: '90%',
+                    color: 'auto'
+                },
+                title: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                },
+                detail: {
+                    textStyle: {
+                        color: 'auto'
+                    }
+                }
+            },
+            textStyle: {
+                fontFamily: 'Arial, Verdana, sans-serif'
+            }
+        };
+
+        var echartGauge = echarts.init(document.getElementById('echart_guage'), theme);
+
+    </script>
+
+</body>
+
+</html>

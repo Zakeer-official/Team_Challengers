@@ -1,36 +1,15 @@
 from django.urls import path
-from .views import get_water_data , get_water_quality 
+from .views import get_water_data , get_water_quality  , get_cities_data , previousmonth_leakage , monthlylimit_consumption , yearlylimit_consumption 
 
 urlpatterns = [
     path('water-data/', get_water_data, name='water-data'),
     path('water-purify/', get_water_quality, name='water-data'),
-    
+    path('citydata/' , get_cities_data , name = "indore data ") , 
+    path('prevmonth/' , previousmonth_leakage , name="previousmonthleakage") , 
+    path("monthlylc" , monthlylimit_consumption , name = "monthlylc"), 
+    path("yearlylc " , yearlylimit_consumption  , name="monthly consumption ")  ,     
 ]
 
 
 
 
-# Betma
-# Depalpur
-# Dr. Ambedkar Nagar
-# Hatod
-# Indore
-# Manglaya Sadak
-# Mhowgaon
-# Palda
-# Rau
-# Runji Gautampura
-# Sanwer
-# Sinhasa
-# V Anagar
-# Palasiya
-# Old Palasiya
-# Rajin Nagar
-# No Laksiyaru
-# Divas Nagar
-# Niranjan Screen
-# Bapat Chur
-# Sandar Nagar
-# Tour Chora
-# Agaran Dajr
-# Hindi Cha

@@ -9,7 +9,7 @@ from .models import WaterQuality
 from django.db.utils import IntegrityError
 import os
 import joblib
-
+import random
 # Initialize Firebase only once
 if not firebase_admin._apps:
     cred = credentials.Certificate(r'C:\Users\Jayanth\Documents\GitHub\Team_Challengers\backend\server\server\test.json')
@@ -107,10 +107,67 @@ def get_water_quality(request):
     predict_potability()
     return JsonResponse({"status": "Water quality prediction task executed"})
 
-# Uncomment the following lines to start the scheduler
-# def start_scheduler():
-#     scheduler = BackgroundScheduler()
-#     scheduler.add_job(predict_potability, 'interval', hours=2)
-#     scheduler.start()
+def water_usage(inflow):
+    result = []
 
-# start_scheduler()
+    for i  in range( 24):
+        result.append( inflow[i] - random.randint(200 , 400 )+ 2*i) 
+    return result 
+
+def inflow():
+    result = []
+    for i  in range( 24):
+        result.append( random.randint(200 , 400 )+ 2*i*5) 
+    return result
+def get_cities_data(request):
+    cities = [ "Betma" , 
+               "Depalpur" , 
+               "Dr. Ambedkar Nagar" , 
+                "Hatod" , 
+                "Indore" , 
+                "Manglaya Sadak" , 
+"Mhowgaon" ,
+"Palda"  , 
+"Rau", 
+"Runji Gautampura" , 
+"Sanwer" , 
+"Sinhasa" , 
+"V Anagar" , 
+"Palasiya" , 
+"Old Palasiya" ,  
+"Rajin Nagar" , 
+"No Laksiyaru" , 
+"Divas Nagar"  , 
+"Niranjan Screen"  , 
+"Bapat Chur" , 
+"Sandar Nagar" , 
+"Tour Chor" , 
+"Agaran Dajr" , 
+"Hindi Cha]" , ]
+    dinflow = inflow() 
+    usage = water_usage(dinflow) 
+    return JsonResponse({"name" : cities , "usage" :usage , "inflow": dinflow})
+    
+
+def previousmonth_leakage(request):
+    totalwater = 0 
+    leakwater = 0 
+    percent = (totalwater)/(totalwater + leakwater)
+    return JsonResponse({"precentage" : percent })
+
+def monthlylimit_consumption(request):
+    ul = []
+    rl = []
+    uc = [] 
+    rc = []
+    return JsonResponse({ "urbanlimit" : ul , "rurallimit" : rl , "urbanconsumption": uc , "ruralconsumption": rc })
+
+     
+
+def yearlylimit_consumption(request):
+    ul = []
+    rl = []
+    
+    uc = [] 
+    rc = []
+    return JsonResponse({ "urbanlimit" : ul , "rurallimit" : rl , "urbanconsumption": uc , "ruralconsumption": rc })

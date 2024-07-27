@@ -158,7 +158,7 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.blueAccent[900]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Pages
@@ -187,7 +187,7 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.blueAccent[900]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Charts

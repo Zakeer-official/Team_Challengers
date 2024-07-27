@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Water Supply Management System</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="build/images/favicon.ico" type="image/ico" />
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/font-awesome/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="build/css/style.css" rel="stylesheet" />
+    <link href="build/css/custom.min.css" rel="stylesheet">
+    <link href="alert.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="/vendors/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/Chart.min.js"></script>
+    <!-- ECharts -->
+    <script src="vendors/echart/echarts.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB68WUlPyIDFfs5KHq0a_dbaSROGZF_o8A",
+            authDomain: "team-challengers-37568.firebaseapp.com",
+            databaseURL: "https://team-challengers-37568-default-rtdb.firebaseio.com",
+            projectId: "team-challengers-37568",
+            storageBucket: "team-challengers-37568.appspot.com",
+            messagingSenderId: "847627362842"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            position: absolute;
+        }
+
+        .top_nav {
+            background: #2A3F54;
+            padding: 15px;
+            color: white;
+        }
+
+        .nav_menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav_menu .title-alignment {
+            color: rgb(252, 4, 4);
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .top_nav .user-profile {
+            color: #1ABB9C;
+        }
+
+        .x_panel {
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .x_title {
+            background: #2A3F54;
+            color: white;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .x_content {
+            padding: 20px;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .chart-container .x_panel {
+            flex: 1;
+            margin: 10px;
+            min-width: 300px;
+        }
+
+        footer {
+            background: #2A3F54;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+
+</head>
+
+<body class="nav-md" onload="startDateTime()">
+
+    <div class="loader"></div>
+
+    <div id="login_div" class="main-div">
+        <h3>Water Supply Management System</h3>
+        <input type="email" placeholder="Email..." id="email_field" />
+        <input type="password" placeholder="Password..." id="password_field" />
+        <button onclick="login()">Login to Account</button>
+    </div>
+
+    <div id="user_div" class="loggedin-div">
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <a class="title-alignment" href="index.html">
+                    <strong>Water Supply Management System</strong>
+                </a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span class="fa fa-angle-down"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-usermenu pull-right">
+                            <li>
+                                <a id="username"></a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">Help</a>
+                            </li>
+                            <li>
+                                <a onclick="logout()">
+                                    <i class="fa fa-sign-out pull-right"></i> Log Out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                            <em class="far fa-envelope"></em>
+                            <span class="badge bg-green">6</span>
+                        </a>
+                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                            <!-- Messages here -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="row tile_count" style="display: flex;margin-top: 20px;justify-content: space-between;">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <span class="count_top"><em class="fas fa-tachometer-alt"></em> Total Water</span>
+                    <div class="count" id="totalwater">25,000</div>
+                    <span class="count_bottom"><i class="green">Liters</i> | Currently</span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <span class="count_top"><i class="fas fa-weight"></i> Pressure</span>
+                    <div class="count green">123.50</div>
+                    <span class="count_bottom"><i class="gray">Pascal</i></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <span class="count_top"><i class="fas fa-tachometer-alt"></i> Total Water</span>
+                    <div class="count">2,500</div>
+                    <span class="count_bottom"><i class="green">Liters</i> | Per Day</span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div id="date"></div>
+                    <div id="time"></div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-container">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Flow Meter</h2>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>pH Reading</h2>
+                    </div>
+                    <div class="x_content">
+                        <div id="echart_guage" style="height:357px;"></div>
+                    </div>
+                </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Analytics</h2>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="canvasDoughnut"></canvas>
+                    </div>
+                </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Industry Usage</h2>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="canvasDoughnut2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- /Charts -->
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                Developed on <a href="http://www.itslogicnotmagic.com"><b>2024</b></a>
+            </div>
+        </footer>
+        <!-- /footer content -->
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Line Chart
+            var ctx = document.getElementById('lineChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    datasets: [{
+                        label: 'Water Flow',
+                        data: [12, 19, 3, 5, 2, 3, 7],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Doughnut Chart
+            var ctxDoughnut = document.getElementById('canvasDoughnut').getContext('2d');
+            new Chart(ctxDoughnut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Blue', 'Red', 'Yellow'],
+                    datasets: [{
+                        data: [10, 20, 30],
+                        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+            // Second Doughnut Chart
+            var ctxDoughnut2 = document.getElementById('canvasDoughnut2').getContext('2d');
+            new Chart(ctxDoughnut2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Green', 'Orange', 'Purple'],
+                    datasets: [{
+                        data: [40, 30, 30],
+                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)'],
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+            // EChart Gauge
+            var myChart = echarts.init(document.getElementById('echart_guage'));
+            var option = {
+                series: [{
+                    type: 'gauge',
+                    center: ['50%', '60%'],
+                    radius: '60%',
+                    min: 0,
+                    max: 14,
+                    splitNumber: 7,
+                    axisLine: {
+                        lineStyle: {
+                            color: [[0.2, '#228B22'], [0.8, '#32CD32'], [1, '#FFD700']],
+                            width: 8
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: '#fff',
+                            width: 2
+                        }
+                    },
+                    axisLabel: {
+                        color: '#fff',
+                        fontSize: 12
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, '-40%'],
+                        color: '#fff'
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: '{value} pH',
+                        color: 'auto'
+                    },
+                    data: [{ value: 4, name: 'pH Level' }]
+                }]
+            };
+            myChart.setOption(option);
+        });
+
+        function startDateTime() {
+            var today = new Date();
+            var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+            var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+            document.getElementById('date').innerHTML = date;
+            document.getElementById('time').innerHTML = time;
+        }
+
+        function login() {
+            var email = document.getElementById('email_field').value;
+            var password = document.getElementById('password_field').value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(function (user) {
+                    document.getElementById('login_div').style.display = 'none';
+                    document.getElementById('user_div').style.display = 'block';
+                    document.getElementById('username').innerHTML = 'Hello, ' + email;
+                })
+                .catch(function (error) {
+                    alert(error.message);
+                });
+        }
+
+        function logout() {
+            firebase.auth().signOut()
+                .then(function () {
+                    document.getElementById('login_div').style.display = 'block';
+                    document.getElementById('user_div').style.display = 'none';
+                })
+                .catch(function (error) {
+                    alert(error.message);
+                });
+        }
+    </script>
+</body>
+
+</html>

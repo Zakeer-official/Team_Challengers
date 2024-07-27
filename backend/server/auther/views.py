@@ -99,6 +99,9 @@ def predict_potability():
     # Delete all values in Firebase
     ref.set({})
     print("All values deleted in Firebase")
+    
+    # Convert potability array to list for JSON serialization
+    return JsonResponse(data={"Predict": potability.tolist()})
 
 def get_water_quality(request):
     predict_potability()

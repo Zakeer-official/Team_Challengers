@@ -1,3 +1,4 @@
+import { colors } from "@mui/material";
 import { tokens } from "../theme";
 
 export const mockDataTeam = [
@@ -165,20 +166,20 @@ export const mockPieData = [
     id: "lisp",
     label: "lisp",
     value: 503,
-    color: "hsl(229, 70%, 50%)",
+    color: colors.grey[100],
   },
   {
     id: "scala",
     label: "scala",
     value: 584,
-    color: "hsl(344, 70%, 50%)",
+    color: colors.grey[100],
   },
 ];
 
 export const mockLineData = [
   {
-    id: "Rural",
-    color: tokens("dark").greenAccent[500],
+    id: "Leakage",
+    color: tokens("dark").redAccent[500],
     data: [
       {
         x: "January",
@@ -231,14 +232,14 @@ export const mockLineData = [
     ],
   },
   {
-    id: "Urban",
-    color: tokens("dark").redAccent[500],
+    id: "Consumption",
+    color: tokens("dark").greenAccent[500],
     data: [
       {
         x: "January",
         y: 101,
       },
-      {
+      { 
         x: "February",
         y: 705,
       },

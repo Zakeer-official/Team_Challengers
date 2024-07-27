@@ -57,7 +57,7 @@ const Dashboard = () => {
         <StatBox
           title="12,361"
           subtitle="Prediction of Water (next day)"
-          progress="0.75"
+          progress="0.90"
           increase="+14%"
           icon={
             <WaterIcon
@@ -129,13 +129,17 @@ const Dashboard = () => {
           gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          overflow="auto"
+          height="100%" // Ensure container takes full height
+          display="flex"
+          flexDirection="column"
+          p="20px" // Add padding as needed
         >
           <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
+            mb="20px" // Add margin below the header section
           >
             <Box>
               <Typography
@@ -143,7 +147,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Monthly Analysis
+                Analysis
               </Typography>
               <Typography
                 variant="h3"
@@ -161,10 +165,43 @@ const Dashboard = () => {
               </IconButton>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+          
+          <Box
+            display="flex"
+            flexDirection="column"
+            overflowY="auto" // Enable vertical scrolling
+            height="calc(100% - 60px)" // Adjust height to fit below the header section
+          >
+            <Box mb="20px">
+              <Typography
+                variant="h6"
+                fontWeight="600"
+                color={colors.grey[300]}
+                mb="10px"
+              >
+                Rural Region
+              </Typography>
+              <Box height="250px">
+                <LineChart isDashboard={true} />
+              </Box>
+            </Box>
+            
+            <Box>
+              <Typography
+                variant="h6"
+                fontWeight="600"
+                color={colors.grey[300]}
+                mb="10px"
+              >
+                Urban Region
+              </Typography>
+              <Box height="250px">
+                <LineChart isDashboard={true} />
+              </Box>
+            </Box>
           </Box>
         </Box>
+
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -236,7 +273,7 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
+            <ProgressCircle progress = "0.90"  size="125" />
             <Typography
               variant="h5"
               color={colors.greenAccent[500]}
@@ -277,7 +314,8 @@ const Dashboard = () => {
             Indore Map
           </Typography>
           <Box height="200px">
-            <GeographyChart isDashboard={true} />
+          <img src="https://www.mapsofindia.com/maps/madhyapradesh/indore.gif" alt="Indore Map" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <GeographyChart isDashboard={true} />
           </Box>
         </Box>
       </Box>

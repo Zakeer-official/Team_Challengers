@@ -1,0 +1,64 @@
+/usr/local/lib/python3.10/dist-packages/sklearn/metrics/_classification.py:1344: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+Model: Decision Tree
+Accuracy: 0.5884146341463414
+Precision: 0.5925905106707317
+Recall: 0.5884146341463414
+F1 Score: 0.5903123873603268
+Confusion Matrix:
+[[271 141]
+ [129 115]]
+
+Model: Random Forest
+Accuracy: 0.6890243902439024
+Precision: 0.6814002097318429
+Recall: 0.6890243902439024
+F1 Score: 0.6605269502976092
+Confusion Matrix:
+[[367  45]
+ [159  85]]
+
+Model: Gradient Boosting
+Accuracy: 0.6585365853658537
+Precision: 0.6424289838095637
+Recall: 0.6585365853658537
+F1 Score: 0.615711170833122
+Confusion Matrix:
+[[369  43]
+ [181  63]]
+
+Model: Logistic Regression
+Accuracy: 0.6280487804878049
+Precision: 0.3944452706722189
+Recall: 0.6280487804878049
+F1 Score: 0.4845619804512653
+Confusion Matrix:
+[[412   0]
+ [244   0]]
+
+Model: Support Vector Machine
+Accuracy: 0.6189024390243902
+Precision: 0.4860059081957279
+Recall: 0.6189024390243902
+F1 Score: 0.48808059635994094
+Confusion Matrix:
+[[403   9]
+ [241   3]]
+
+Model: K-Nearest Neighbors
+Accuracy: 0.5411585365853658
+Precision: 0.5128792932775581
+Recall: 0.5411585365853658
+F1 Score: 0.5218990138268667
+Confusion Matrix:
+[[295 117]
+ [184  60]]
+
+Model: Naive Bayes
+Accuracy: 0.6310975609756098
+Precision: 0.6002868640726541
+Recall: 0.6310975609756098
+F1 Score: 0.5836805688846701
+Confusion Matrix:
+[[361  51]
+ [191  53]]

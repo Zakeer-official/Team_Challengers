@@ -314,7 +314,7 @@ const Dashboard = () => {
             Indore Map
           </Typography>
           <Box height="200px">
-          <img src="https://www.mapsofindia.com/maps/madhyapradesh/rivers/indore-river.jpg" alt="Indore Map" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="https://www.mapsofindia.com/maps/madhyapradesh/indore.gif" alt="Indore Map" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           <GeographyChart isDashboard={true} />
           </Box>
         </Box>

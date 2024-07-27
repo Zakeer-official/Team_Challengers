@@ -1,0 +1,62 @@
+{
+  "name": "react-admin",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "",
+    "@emotion/styled": "",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "",
+    "@fullcalendar/interaction": "",
+    "@fullcalendar/list": "",
+    "@fullcalendar/react": "",
+    "@fullcalendar/timegrid": "",
+    "@mui/icons-material": "",
+    "@mui/material": "^5.16.5",
+    "@mui/x-data-grid": "",
+    "@nivo/bar": "",
+    "@nivo/core": "^0.87.0",
+    "@nivo/geo": "^0.87.0",
+    "@nivo/line": "",
+    "@nivo/pie": "",
+    "@reduxjs/toolkit": "",
+    "@testing-library/jest-dom": "",
+    "@testing-library/react": "",
+    "@testing-library/user-event": "",
+    "chart.js": "",
+    "formik": "",
+    "react": "",
+    "react-chartjs-2": "",
+    "react-dom": "",
+    "react-pro-sidebar": "^1.1.0",
+    "react-redux": "",
+    "react-router-dom": "^6.25.1",
+    "react-scripts": "",
+    "web-vitals": "",
+    "yup": ""
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -72,4 +72,8 @@ uritemplate==4.1.1
 urllib3==2.2.2
 Werkzeug==3.0.3
 wheel==0.43.0
+<<<<<<< HEAD
 wrapt==1.16.0
+=======
+wrapt==1.16.0
+>>>>>>> fb3ee44414eba0c16c75ca057fceca47299d2f24

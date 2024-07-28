@@ -1,5 +1,11 @@
 from django.urls import path
 from .views import get_water_data , get_water_quality 
+from  rest_framework.routers import DefaultRouter 
+
+prouter = DefaultRouter()
+prouter.register(' ')
+
+
 
 urlpatterns = [
     path('water-data/', get_water_data, name='water-data'),

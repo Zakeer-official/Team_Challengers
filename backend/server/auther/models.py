@@ -18,3 +18,4 @@ class WaterQuality(models.Model):
 
     def __str__(self):
         return f"WaterQuality(id={self.id}, potability={self.potability})"
+
